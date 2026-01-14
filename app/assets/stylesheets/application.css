@@ -1,0 +1,78 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 4px;
+  font-family: sans-serif;
+  font-size: 13px;
+  background: #fff;
+  color: #000;
+}
+
+h1, h2, h3 { margin: 0 0 4px; font-weight: bold; }
+h1 { font-size: 20px; }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+p { margin: 0; }
+
+input, select, button, a {
+  font-family: sans-serif;
+  font-size: 13px;
+}
+
+input[type="text"], input[type="number"], input[type="color"], input[type="range"], select {
+  padding: 3px 4px;
+  border: 1px solid #000;
+}
+
+.btn {
+  padding: 3px 6px;
+  border: 1px solid #000;
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn-secondary { background: #fff; }
+
+.hub { max-width: 900px; margin: 0 auto; }
+.hub-header { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; align-items: center; }
+.user-bar { display: flex; gap: 8px; }
+.user-name, .user-lang { display: flex; gap: 3px; align-items: center; }
+.user-name form, .user-lang form { display: flex; gap: 3px; align-items: center; }
+.user-name label, .user-lang label { font-size: 13px; }
+
+.canvas-list { margin-bottom: 8px; }
+.canvas-list h2 { font-weight: normal; }
+.canvas-grid { display: block; }
+.canvas-item { padding: 0; margin: 10px 0; }
+.canvas-link { text-decoration: underline; color: #2b7bff; font-weight: normal; }
+.canvas-head { display: block; margin-bottom: 4px; }
+.canvas-meta-line { font-size: 11px; }
+.canvas-actions-line { font-size: 11px; }
+.canvas-action-link { font-size: 11px; cursor: pointer; color: #000; text-decoration: underline; }
+
+.dialog { position: fixed; inset: 0; z-index: 1000; }
+.dialog-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+.dialog-content { position: relative; max-width: 320px; margin: 50px auto; background: #fff; border: 1px solid #000; padding: 8px; }
+.form-row { display: flex; gap: 4px; align-items: center; margin-bottom: 4px; }
+.form-row label { width: 55px; font-size: 13px; }
+.form-row input, .form-row select { flex: 1; font-size: 13px; }
+.form-actions { display: flex; gap: 4px; margin-top: 4px; }
+
+.canvas-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.nav-back { text-decoration: none; color: #000; border: 1px solid #000; padding: 3px 6px; font-size: 13px; }
+.canvas-app { max-width: 960px; margin: 0 auto; }
+
+.canvas-page { display: grid; gap: 4px; max-width: 960px; margin: 0 auto; }
+.controls-inline { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.canvas-shell { display: grid; gap: 4px; }
+.canvas-shell canvas { width: 100%; border: 1px solid #000; background: #fff; display: block; touch-action: none; }
+
+.size-input-small { width: 50px; }
+
+@media (max-width: 600px) {
+  body { padding: 2px; }
+  .hub-header { flex-direction: column; gap: 4px; align-items: flex-start; }
+  .user-bar { flex-direction: column; gap: 4px; }
+}
+

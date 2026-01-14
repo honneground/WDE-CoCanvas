@@ -1,0 +1,24 @@
+ja:
+  canvas:
+    show:
+      color_label: "色"
+      size_label: "ブラシ"
+      back: "戻る"
+  home:
+    index:
+      title: "CoCanvas"
+      name_label: "名前"
+      language_label: "言語"
+      all_canvas: "キャンバス一覧"
+      rename: "名前変更"
+      delete: "削除"
+      confirm_delete: "削除してもよろしいですか？"
+      no_canvas_yet: "キャンバスはまだありません"
+      new: "新規"
+      new_canvas: "キャンバスを作成"
+      rename_canvas: "キャンバス名の変更"
+      width: "幅"
+      height: "高さ"
+      create: "作成"
+      cancel: "キャンセル"
+      save: "保存"

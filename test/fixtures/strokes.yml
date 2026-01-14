@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  color: MyString
+  size: 1
+  x1: 1.5
+  y1: 1.5
+  x2: 1.5
+  y2: 1.5
+  position: 1
+
+two:
+  color: MyString
+  size: 1
+  x1: 1.5
+  y1: 1.5
+  x2: 1.5
+  y2: 1.5
+  position: 1

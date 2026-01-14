@@ -1,0 +1,21 @@
+<% content_for :title, @canvas.name %>
+
+<div class="canvas-app" data-canvas-id="<%= @canvas.id %>">
+  <nav class="canvas-nav">
+    <h2><%= @canvas.name %></h2>
+  </nav>
+
+  <section class="canvas-page" data-controller="canvas" data-canvas-id="<%= @canvas.id %>" data-canvas-width="<%= @canvas.width %>" data-canvas-height="<%= @canvas.height %>">
+    <div class="canvas-shell">
+      <canvas data-canvas-target="surface" aria-label="Drawing surface"></canvas>
+    </div>
+
+    <div class="controls-inline">
+      <label class="label" for="brush-color"><%= t('canvas.show.color_label') %>:</label>
+      <input id="brush-color" type="color" value="#000000" data-canvas-target="color">
+      <label class="label" for="brush-size"><%= t('canvas.show.size_label') %>:</label>
+      <input id="brush-size-input" type="number" min="1" value="4" class="size-input-small" data-canvas-target="sizeValue" data-action="input->canvas#updateSizeFromInput change->canvas#updateSizeFromInput">
+      <input id="brush-size" type="range" min="1" max="200" value="4" data-canvas-target="size" data-action="input->canvas#updateSizeFromSlider">
+      <a href="<%= root_path %>" class="btn nav-back"><%= t('canvas.show.back') %></a>
+  </section>
+</div>

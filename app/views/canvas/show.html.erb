@@ -1,0 +1,18 @@
+<% content_for :title, t('.page_title') %>
+
+<section class="canvas-page" data-controller="canvas">
+  <div class="canvas-shell">
+    <canvas data-canvas-target="surface" aria-label="<%= t('.canvas_aria') %>"></canvas>
+  </div>
+
+  <div class="controls-inline">
+    <label class="label" for="brush-color"><%= t('.color_label') %></label>
+    <input id="brush-color" type="color" value="#2b7bff" data-canvas-target="color">
+
+    <label class="label" for="brush-size"><%= t('.size_label') %></label>
+    <input id="brush-size" type="range" min="1" max="200" value="12" data-canvas-target="size" data-action="input->canvas#updateSizeFromSlider">
+    <input id="brush-size-input" type="number" min="1" value="12" class="size-input" data-canvas-target="sizeValue" data-action="input->canvas#updateSizeFromInput change->canvas#updateSizeFromInput">
+
+    <button class="btn" data-action="canvas#clear"><%= t('.clear') %></button>
+  </div>
+</section>

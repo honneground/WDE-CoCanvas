@@ -1,0 +1,147 @@
+<% content_for :title, "CoCanvas" %>
+
+<div class="hub">
+  <header class="hub-header">
+    <h1><%= t('home.index.title') %></h1>
+    <div class="user-bar">
+      <div class="user-name">
+        <label><%= t('home.index.name_label') %>:</label>
+        <form method="post" action="<%= home_update_username_path %>" style="display:inline;">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <input type="text" name="username" value="<%= @user.username %>" placeholder="Your name">
+          <button type="submit" class="btn"><%= t('home.index.save') %></button>
+        </form>
+      </div>
+      <div class="user-lang">
+        <label><%= t('home.index.language_label') %>:</label>
+        <form method="post" action="<%= home_update_language_path %>" style="display:inline;">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <select name="language" onchange="this.form.submit()">
+            <option value="en" <%= 'selected' if @user.language == 'en' %>>English</option>
+            <option value="ja" <%= 'selected' if @user.language == 'ja' %>>日本語</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <div class="canvas-list">
+    <h2><%= t('home.index.all_canvas') %></h2>
+    <% if @canvases.any? %>
+      <div class="canvas-grid">
+        <% @canvases.each do |canvas| %>
+          <div class="canvas-item">
+            <div class="canvas-head">
+              <a href="<%= canvas_path(canvas) %>" class="canvas-link"><strong><%= canvas.name %></strong></a>
+            </div>
+            <div class="canvas-meta-line"><%= canvas.width %>×<%= canvas.height %></div>
+            <div class="canvas-meta-line"><em><%= canvas.user.username %></em></div>
+            <div class="canvas-meta-line" data-created-at="<%= canvas.created_at.iso8601 %>"></div>
+            <% if canvas.user_id == @user.id %>
+              <div class="canvas-actions-line">
+                <a href="javascript:void(0)" onclick="renameCanvas(<%= canvas.id %>, '<%= canvas.name.gsub("'", "\\'" ) %>')" class="canvas-action-link"><%= t('home.index.rename') %></a>
+                <span>·</span>
+                <a href="javascript:void(0)" onclick="if(confirm('<%= t('home.index.confirm_delete') %>')) { var form = document.createElement('form'); form.method='post'; form.action='/canvases/<%= canvas.id %>'; form.innerHTML='<input type=hidden name=_method value=delete><input type=hidden name=authenticity_token value=<%= form_authenticity_token %>>'; document.body.appendChild(form); form.submit(); }" class="canvas-action-link"><%= t('home.index.delete') %></a>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p>(<%= t('home.index.no_canvas_yet') %>)</p>
+    <% end %>
+  </div>
+
+  <button onclick="showCreateDialog()" class="btn"><%= t('home.index.new') %></button>
+
+  <div id="create-dialog" class="dialog" style="display:none;">
+    <div class="dialog-backdrop" onclick="hideCreateDialog()"></div>
+    <div class="dialog-content">
+      <h3><%= t('home.index.new_canvas') %></h3>
+      <form method="post" action="<%= canvases_path %>" onsubmit="handleCreateSubmit()">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <div class="form-row">
+          <label for="name"><%= t('home.index.name_label') %>:</label>
+          <input id="name" type="text" name="name" placeholder="Untitled 1" required>
+        </div>
+        <div class="form-row">
+          <label for="width"><%= t('home.index.width') %>:</label>
+          <input id="width" type="number" name="width" value="720" min="100">
+        </div>
+        <div class="form-row">
+          <label for="height"><%= t('home.index.height') %>:</label>
+          <input id="height" type="number" name="height" value="540" min="100">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn"><%= t('home.index.create') %></button>
+          <button type="button" onclick="hideCreateDialog()" class="btn btn-secondary"><%= t('home.index.cancel') %></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="rename-dialog" class="dialog" style="display:none;">
+    <div class="dialog-backdrop" onclick="hideRenameDialog()"></div>
+    <div class="dialog-content">
+      <h3><%= t('home.index.rename_canvas') %></h3>
+      <form method="post" action="" id="rename-form">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <div class="form-row">
+          <label for="rename-input"><%= t('home.index.name_label') %>:</label>
+          <input id="rename-input" type="text" name="name" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn"><%= t('home.index.save') %></button>
+          <button type="button" onclick="hideRenameDialog()" class="btn btn-secondary"><%= t('home.index.cancel') %></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+let nextUntitled = <%= @canvases.select { |c| c.name.match?(/^untitled \d+$/i) }.map { |c| c.name.match(/\d+/)[0].to_i }.max.to_i + 1 %>;
+
+function showCreateDialog() {
+  document.getElementById('name').value = `Untitled ${nextUntitled}`;
+  document.getElementById('create-dialog').style.display = 'block';
+}
+
+function hideCreateDialog() {
+  document.getElementById('create-dialog').style.display = 'none';
+}
+
+function handleCreateSubmit() {
+  const nameInput = document.getElementById('name').value;
+  if (nameInput.match(/^untitled \d+$/i)) {
+    nextUntitled++;
+  }
+}
+
+function renameCanvas(id, currentName) {
+  document.getElementById('rename-input').value = currentName;
+  document.getElementById('rename-form').action = `/canvases/${id}/rename`;
+  document.getElementById('rename-dialog').style.display = 'block';
+}
+
+function hideRenameDialog() {
+  document.getElementById('rename-dialog').style.display = 'none';
+}
+
+// Format created_at timestamps using browser's local timezone
+function formatTimestamps() {
+  document.querySelectorAll('[data-created-at]').forEach(el => {
+    const isoTime = el.getAttribute('data-created-at');
+    const date = new Date(isoTime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    el.textContent = `${year}-${month}-${day} ${hours}:${minutes}`;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', formatTimestamps);
+document.addEventListener('turbo:load', formatTimestamps);
+</script>
